@@ -1,0 +1,52 @@
+{
+  "myDesigns": [
+    {
+      "title": "Modern Art Poster",
+      "description": "A vibrant poster design inspired by modern art trends.",
+      "coverImage": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+      "imageList": [
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
+      ],
+      "dateCreated": "2025-07-10"
+    },
+    {
+      "title": "Minimalist Logo",
+      "description": "A clean and simple logo for a tech startup.",
+      "coverImage": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      "imageList": [
+        "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+      ],
+      "dateCreated": "2025-07-09"
+    },
+    {
+      "title": "Nature Illustration",
+      "description": "A beautiful illustration of nature and wildlife.",
+      "coverImage": "https://ix-marketing.imgix.net/autotagging.png?auto=format,compress&w=3524",
+      "imageList": [
+        "https://ix-marketing.imgix.net/autotagging.png?auto=format,compress&w=3524",
+        "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80"
+      ],
+      "dateCreated": "2025-07-08"
+    },
+    {
+      "title": "Abstract Shapes",
+      "description": "A collection of abstract shapes and colors.",
+      "coverImage": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+      "imageList": [
+        "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
+        "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80"
+      ],
+      "dateCreated": "2025-07-07"
+    },
+    {
+      "title": "Vintage Poster",
+      "description": "A retro style poster with vintage elements.",
+      "coverImage": "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80",
+      "imageList": [
+        "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80"
+      ],
+      "dateCreated": "2025-07-06"
+    }
+  ]
+}

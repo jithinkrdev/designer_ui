@@ -1,0 +1,34 @@
+{
+  "Nighty_Pink_Floral": {
+    "model": {
+      "modelImageUrl": "https://storage.cloud.google.com/noolil/uploads/1753201661538-modal.jpg",
+      "prompt": "Replace the model’s outfit with the pink floral nighty from the dress image. The nighty is floor-length, soft cotton, with short sleeves and a round neck. Maintain model’s face, pose, and lighting."
+    },
+    "dresses": [
+      {
+        "dressImageUrl": "https://storage.googleapis.com/your-bucket/dresses/nighty_pink_floral_1.jpg",
+        "prompt": "Replace the model’s outfit with the pink floral nighty from the dress image. The nighty is floor-length, soft cotton, with short sleeves and a round neck. Maintain model’s face, pose, and lighting."
+      },
+      {
+        "dressImageUrl": "https://storage.googleapis.com/your-bucket/dresses/nighty_pink_floral_2.jpg",
+        "prompt": "Apply the pink floral night dress from the reference onto the model. The nighty is loose-fitting with subtle floral prints and side pockets. Maintain model's pose, expression, and hairstyle."
+      }
+    ]
+  },
+  "Kurti_Blue_Embroidered": {
+    "model": {
+      "modelImageUrl": "https://storage.googleapis.com/your-bucket/models/model3.jpg",
+      "prompt": "Put the blue embroidered kurti onto the model. It’s a straight-cut kurti with three-quarter sleeves and traditional neckline embroidery. Model pose, background, and lighting should stay natural."
+    },
+    "dresses": [
+      {
+        "dressImageUrl": "https://storage.googleapis.com/your-bucket/dresses/kurti_blue_embroidery_1.png",
+        "prompt": "Put the blue embroidered kurti onto the model. It’s a straight-cut kurti with three-quarter sleeves and traditional neckline embroidery. Model pose, background, and lighting should stay natural."
+      },
+      {
+        "dressImageUrl": "https://storage.googleapis.com/your-bucket/dresses/kurti_blue_embroidery_2.png",
+        "prompt": "Overlay the model with the elegant blue kurti shown in the image. It features a rich cotton texture and fine thread embroidery. Keep the model’s features and background intact."
+      }
+    ]
+  }
+}
