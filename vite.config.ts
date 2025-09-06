@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: 'https://storage.googleapis.com/design_app_bucket/', 
   plugins: [react(), tailwindcss()],
+  base: './', 
   build: {
     outDir: 'dist', // default, but explicitly set for clarity
   },
