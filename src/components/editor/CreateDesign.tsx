@@ -58,8 +58,8 @@ const CreateDesign: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      // Expecting { imageUrl, designId }
-      const { imageUrl, designId } = res.data;
+      // Expecting { imageUrl }
+      const { imageUrl } = res.data;
       setGeneratedImageUrl(imageUrl);
       setShowModal(true);
       // Optionally, you can use designId for further logic

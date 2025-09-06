@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import type { ChangeEvent, FormEvent, RefObject } from "react";
-import { Upload, ImageIcon, Trash2 } from "lucide-react";
+import type { ChangeEvent, FormEvent } from "react";
+import { ImageIcon, Trash2 } from "lucide-react";
 import api from "../../api/config";
 import GeneratedImageModal from "./GeneratedImageModal";
 import BusyIndicator from "../common/BusyIndicator";
@@ -56,12 +56,12 @@ const EditorView: React.FC = () => {
     setDressInputs(updatedInputs);
   };
 
-  const handleAddMore = (): void => {
-    setDressInputs((prev: DressInput[]) => [
-      ...prev,
-      { prompt: "", file: null },
-    ]);
-  };
+  // const handleAddMore = (): void => {
+  //   setDressInputs((prev: DressInput[]) => [
+  //     ...prev,
+  //     { prompt: "", file: null },
+  //   ]);
+  // };
 
   const handleDelete = (index: number): void => {
     setDressInputs((prev: DressInput[]) => prev.filter((_, i) => i !== index));
@@ -136,8 +136,8 @@ const EditorView: React.FC = () => {
         },
       });
 
-      // Expecting { imageUrl, catelogId }
-      const { imageUrl, catelogId } = response.data;
+      // Expecting { imageUrl }
+      const { imageUrl } = response.data;
       setGeneratedImageUrl(imageUrl);
       setShowModal(true);
       // Optionally, you can use catelogId for further logic
