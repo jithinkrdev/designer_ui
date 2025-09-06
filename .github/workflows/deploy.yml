@@ -38,6 +38,14 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+        # Step 4: Optional: Verify authentication without exposing key
+      - name: Verify GCP authentication
+        run: |
+          echo "GCP Project:"
+          gcloud config get-value project
+          echo "Service account email:"
+          gcloud auth list --filter=status:ACTIVE --format="value(account)"
+
       # 7. Install gsutil
       - name: Install gsutil
         run: |
