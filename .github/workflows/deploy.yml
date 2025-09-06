@@ -30,7 +30,7 @@ jobs:
 
       # 5. Verify build folder exists
       - name: Check build folder
-        run: ls -l build
+        run: ls -l dist
 
       # 6. Authenticate with Google Cloud
       - name: Authenticate with GCP
@@ -51,6 +51,6 @@ jobs:
       - name: Deploy to GCS
         run: |
           # Sync build folder to bucket and delete old files
-          gsutil -m rsync -d -r build/ gs://design_app_bucket
+          gsutil -m rsync -d -r dist/ gs://design_app_bucket
           # Set website configuration for SPA routing
           gsutil web set -m index.html -e 404.html gs://design_app_bucket
