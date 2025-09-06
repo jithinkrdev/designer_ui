@@ -30,7 +30,12 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Install gsutil
-        run: sudo apt-get install -y google-cloud-sdk
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-cloud-cli
+
+      - name: Check gsutil
+        run: gsutil version
 
       - name: Deploy to GCS
         run: |
