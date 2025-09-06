@@ -10,25 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the repo
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm ci
 
+      # 4. Build React app
       - name: Build React app
         run: npm run build
 
-      - name: Authenticate with Google Cloud
+      # 5. Verify build folder exists
+      - name: Check build folder
+        run: ls -l build
+
+      # 6. Authenticate with Google Cloud
+      - name: Authenticate with GCP
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+      # 7. Install gsutil
       - name: Install gsutil
         run: |
           sudo apt-get update
@@ -37,7 +47,10 @@ jobs:
       - name: Check gsutil
         run: gsutil version
 
+      # 8. Deploy to GCS bucket
       - name: Deploy to GCS
         run: |
-          gsutil -m rsync -r build gs://design_app_bucket
+          # Sync build folder to bucket and delete old files
+          gsutil -m rsync -d -r build/ gs://design_app_bucket
+          # Set website configuration for SPA routing
           gsutil web set -m index.html -e 404.html gs://design_app_bucket
