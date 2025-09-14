@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./user/Login";
 import Register from "./user/Register";
-import Dashboard from "./pages/Dashboard";
-import EditorPage from "./pages/EditorPage";
 import DesignPage from "./pages/DesignPage";
 import SeoGeneratorPage from "./pages/SeoGeneratorPage";
 import NotFound from "./pages/NotFound";

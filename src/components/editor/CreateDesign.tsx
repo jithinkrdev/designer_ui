@@ -65,6 +65,7 @@ const CreateDesign: React.FC = () => {
       // Optionally, you can use designId for further logic
     } catch (err) {
       setError("Something went wrong while generating the design.");
+      console.log("Design generation error:", err);
     } finally {
       setLoading(false);
     }

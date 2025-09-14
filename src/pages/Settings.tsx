@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Layout from "../layout";
 
 const Settings: React.FC = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <Layout>
       <div
-        className={`flex items-center justify-center min-h-screen w-full pt-24 pb-8 px-2 ${
-          sidebarOpen ? "md:ml-64 md:pl-8 md:pr-8" : ""
-        } transition-all duration-300`}
+        className={`flex items-center justify-center min-h-screen w-full pt-24 pb-8 px-2  "md:ml-64 md:pl-8 md:pr-8  transition-all duration-300`}
       >
         <div className="bg-white rounded-2xl shadow-2xl p-12 flex flex-col items-center animate-fade-in w-full max-w-xl">
           <svg

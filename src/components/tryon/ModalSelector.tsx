@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 // Model type for modal selector
 import { X } from "lucide-react";
 import { ImageWithFallback } from "../lib/ImageWithFallback";
@@ -23,13 +24,8 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState("Default");
   const [models, setModels] = useState<Model[]>([]);
-  const [previewUrl, setPreviewUrl] = useState<string>(""); // can be removed if not used elsewhere
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
     api
       .get("/model", {
         headers: {
@@ -37,8 +33,9 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
         },
       })
       .then((res) => setModels(res.data))
-      .catch(() => setError("Failed to fetch models."))
-      .finally(() => setLoading(false));
+      .catch(() => {
+        toast.error("Failed to fetch models.");
+      });
   }, []);
   const handleSelectModel = (model: Model) => {
     setSelectedModel(model);
@@ -96,7 +93,7 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
         <div
           className="p-4 bg-gray-800 rounded-lg text-white cursor-pointer"
           onClick={() => {
-            if (!previewUrl)
+            if (!selectedModel?.imageUrl)
               document.getElementById("modal-upload-input")?.click();
           }}
         >

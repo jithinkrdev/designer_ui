@@ -10,10 +10,10 @@ export interface Model {
 
 
 export interface TryOnResponse {
-  imageUrl: any;
+  imageUrl: string;
   data: {
     imageUrl: string;
-    [key: string]: any;
+    [key: string]: string | number | boolean | object | null;
   };
   status?: string;
   message?: string;

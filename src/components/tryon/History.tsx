@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { ImageWithFallback } from "../lib/ImageWithFallback";
 import { Button } from "../ui/button";
 import { Edit3, Undo, Download } from "lucide-react";
 import api from "../../api/config";
-import { downloadImage } from "../../utilities/utils";
+// import { downloadImage } from "../../utilities/utils";
 
 const History = () => {
-  const [catalogs, setCatalogs] = useState<any[]>([]);
-  const [selected, setSelected] = useState<{
-    image: string;
-    name: string;
-  } | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+  const [catalogs, setCatalogs] = useState<[]>([]);
   useEffect(() => {
-    setLoading(true);
     const accessToken = localStorage.getItem("token");
     api
       .get("/catelog", {
@@ -26,12 +18,10 @@ const History = () => {
       })
       .then((res) => {
         setCatalogs(res.data);
-        setError(null);
       })
       .catch(() => {
-        setError("Failed to fetch catalogs");
-      })
-      .finally(() => setLoading(false));
+        toast.error("Failed to fetch catalogs");
+      });
   }, []);
 
   return (

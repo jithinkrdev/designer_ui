@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -18,14 +19,10 @@ export default function Login({ onLogin }: LoginProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
     try {
       const res = await api.post("/auth/login", { email, password });
       const token = res.data?.token;
@@ -42,19 +39,26 @@ export default function Login({ onLogin }: LoginProps) {
             subscriptionType: subscription.subscriptionType,
           })
         );
+        toast.success("Login successful!");
         navigate("/");
         onLogin();
       } else {
-        setError("No token received");
+        toast.error("No token received");
       }
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
+    } catch (err: unknown) {
+      console.log(err);
+      const errorMsg =
+        err && typeof err === "object" && "response" in err
+          ? (err as { response: { data: { message: string } } }).response?.data
+              ?.message || "Login failed"
+          : "Login failed";
+
+      toast.error(errorMsg);
     }
   };
 
   const handleSocialLogin = (provider: string) => {
+    console.log("Social login with:", provider);
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
@@ -150,7 +154,7 @@ export default function Login({ onLogin }: LoginProps) {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25 transition-all duration-200 hover:shadow-blue-600/40"
+              className="w-full cursor-pointer h-12 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25 transition-all duration-200 hover:shadow-blue-600/40"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -179,7 +183,7 @@ export default function Login({ onLogin }: LoginProps) {
                 variant="outline"
                 onClick={() => handleSocialLogin("google")}
                 disabled={isLoading}
-                className="h-12 bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
+                className="h-12 cursor-pointer bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
               >
                 <Mail size={18} className="mr-2" />
                 Google
@@ -189,7 +193,7 @@ export default function Login({ onLogin }: LoginProps) {
                 variant="outline"
                 onClick={() => handleSocialLogin("github")}
                 disabled={isLoading}
-                className="h-12 bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
+                className="h-12 cursor-pointer bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white transition-all duration-200"
               >
                 <Github size={18} className="mr-2" />
                 GitHub

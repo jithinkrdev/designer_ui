@@ -9,7 +9,7 @@ const Result = ({
   tryOnResults,
 }: {
   isGenerating: boolean;
-  tryOnResults: any[];
+  tryOnResults: string[];
 }) => {
   return (
     <div className="bg-gray-800 rounded-lg p-4">

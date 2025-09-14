@@ -1,6 +1,5 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "../components/ui/button";
-import CreditActivityPopover from "../components/ui/CreditActivityPopover";
 import { Badge } from "../components/ui/badge";
 import {
   Tabs,
@@ -8,24 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import { ImageWithFallback } from "../components/lib/ImageWithFallback";
-import {
-  Menu,
-  Upload,
-  HelpCircle,
-  RefreshCw,
-  Zap,
-  Settings,
-  Camera,
-  BarChart3,
-  Clock,
-  Edit3,
-  Undo,
-  X,
-  ChevronDown,
-  Plus,
-  ArrowLeft,
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Sidebar from "../layout/Sidebar";
 import ModalOption from "../components/tryon/ModalSelector";
 import GarmentSelector from "../components/tryon/GarmentSelector";
@@ -44,13 +26,11 @@ interface TryOnPageProps {
 export default function TryOn({ onBackToSetup }: TryOnPageProps) {
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [modelImg, setModelImg] = useState<File | string | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<any[]>([]);
+  const [generatedImages, setGeneratedImages] = useState<[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 
   const [activeTab, setActiveTab] = useState("All");
-
-  const [submitted, setSubmitted] = useState(false);
 
   const isMobile = useIsMobile();
 
@@ -225,7 +205,7 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
         initialSection="A"
         sectionALabel="Form"
         sectionBLabel="Result"
-        showSwitch={isMobile || submitted}
+        showSwitch={isMobile}
       />
     </div>
   );

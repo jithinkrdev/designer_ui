@@ -21,8 +21,8 @@ const Register: React.FC = () => {
       await api.post("/auth/register", { name, email, password });
       setSuccess("Registration successful! Please login.");
       setTimeout(() => navigate("/login"), 1200);
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "Registration failed");
+    } catch {
+      setError("Registration failed");
     } finally {
       setLoading(false);
     }

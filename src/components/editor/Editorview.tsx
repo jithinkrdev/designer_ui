@@ -13,7 +13,7 @@ interface TryOnResponse {
 }
 
 const EditorView: React.FC = () => {
-  const [modelImg, setModelImg] = useState<string>("");
+  const [modelImg, setModelImg] = useState<string | File>("");
   const [dressInputs, setDressInputs] = useState<DressInput[]>([
     { prompt: "", file: null, preview: null },
   ]);
@@ -65,9 +65,9 @@ const EditorView: React.FC = () => {
       const formData = new FormData();
 
       // Person (model image)
-      if (modelImg instanceof File) {
+      if (modelImg && typeof modelImg !== "string") {
         formData.append("person", modelImg);
-      } else if (typeof modelImg === "string") {
+      } else if (typeof modelImg === "string" && modelImg !== "") {
         formData.append("personUrl", modelImg);
       }
 

@@ -12,5 +12,6 @@ export async function downloadImage(url: string, filename: string) {
     window.URL.revokeObjectURL(blobUrl);
   } catch (err) {
     alert('Failed to download image.');
+    console.error('Download error:', err);
   }
 }

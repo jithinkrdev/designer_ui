@@ -6,9 +6,7 @@ import { Textarea } from "./ui/textarea";
 import { Skeleton } from "./ui/skeleton";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import api from "../api/config"; // Adjust the import based on your project structure
-import Snackbar from "./common/Snackbar";
-import SeoDialog from "./modals/SeoDialog";
-import BusyIndicator from "./common/BusyIndicator";
+import { toast } from "sonner";
 import TwoSectionSwitcher from "./common/TwoSectionSwitcher";
 import { useIsMobile } from "./ui/use-mobile";
 
@@ -22,11 +20,7 @@ const SeoGenerator: React.FC = () => {
     dressType: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [snackbar, setSnackbar] = useState<{
-    message: string;
-    type: "success" | "error";
-  } | null>(null);
-  const [seoDialogOpen, setSeoDialogOpen] = useState(false);
+  // Remove snackbar state, use sonner toast instead
   const [seoResponse, setSeoResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -53,10 +47,10 @@ const SeoGenerator: React.FC = () => {
         },
       });
       setSeoResponse(res.data || "");
-      setSeoDialogOpen(true);
-      setSnackbar({ message: "SEO generated successfully!", type: "success" });
+      toast.success("SEO generated successfully!");
     } catch (err) {
-      setSnackbar({ message: "Failed to generate SEO.", type: "error" });
+      toast.error("Failed to generate SEO.");
+      console.error("SEO generation error:", err);
     } finally {
       setLoading(false);
     }
@@ -186,10 +180,7 @@ const SeoGenerator: React.FC = () => {
               className="absolute top-2 right-2 p-2 rounded hover:bg-gray-700 text-gray-300 z-10"
               onClick={() => {
                 navigator.clipboard.writeText(seoResponse);
-                setSnackbar({
-                  message: "Copied to clipboard!",
-                  type: "success",
-                });
+                toast.success("Copied to clipboard!");
               }}
               title="Copy to clipboard"
             >
@@ -216,7 +207,6 @@ const SeoGenerator: React.FC = () => {
         sectionBLabel="Result"
         showSwitch={isMobile || submitted}
       />
-      )
     </div>
   );
 };
