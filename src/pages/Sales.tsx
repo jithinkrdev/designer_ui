@@ -1,18 +1,13 @@
-import React, { useState } from "react";
-import Header from "../layout/Header";
+import React from "react";
 import Sidebar from "../layout/Sidebar";
 import { theme } from "./theme";
 
 const Sales: React.FC = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
     <div className={theme.gradientBg + " min-h-screen w-full"}>
-      <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar />
       <div
-        className={`flex flex-col items-center justify-center min-h-screen w-full pt-24 pb-8 px-2 ${
-          sidebarOpen ? "md:ml-64 md:pl-8 md:pr-8" : ""
-        } transition-all duration-300`}
+        className={`flex flex-col items-center justify-center min-h-screen w-full pt-24 pb-8 px-2  "md:ml-64 md:pl-8 md:pr-8 transition-all duration-300`}
       >
         <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
           <h1 className="text-4xl font-bold text-emerald-700 mb-4">Sales</h1>

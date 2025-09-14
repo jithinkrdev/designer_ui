@@ -26,7 +26,7 @@ interface TryOnPageProps {
 export default function TryOn({ onBackToSetup }: TryOnPageProps) {
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [modelImg, setModelImg] = useState<File | string | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<[]>([]);
+  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
 

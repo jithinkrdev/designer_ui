@@ -6,8 +6,13 @@ import { Edit3, Undo, Download } from "lucide-react";
 import api from "../../api/config";
 // import { downloadImage } from "../../utilities/utils";
 
+type Catalog = {
+  imageUrl: string;
+  // Add other properties if needed
+};
+
 const History = () => {
-  const [catalogs, setCatalogs] = useState<[]>([]);
+  const [catalogs, setCatalogs] = useState<Catalog[]>([]);
   useEffect(() => {
     const accessToken = localStorage.getItem("token");
     api

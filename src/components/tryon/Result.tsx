@@ -1,4 +1,3 @@
-import React from "react";
 import { ImageWithFallback } from "../lib/ImageWithFallback";
 import { Button } from "../ui/button";
 import { Edit3, Undo } from "lucide-react";

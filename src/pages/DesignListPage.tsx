@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "../layout/Header";
 import Sidebar from "../layout/Sidebar";
 import CatalogDialog from "../components/modals/CatalogDialog";
 
@@ -32,13 +31,11 @@ const DesignListPage: React.FC = () => {
     image: string;
     name: string;
   } | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const fallbackImg = "https://img.icons8.com/fluency/96/image.png";
 
   return (
     <div className="min-h-screen bg-emerald-50">
-      <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar />
       <main className="pt-24 pl-0 md:pl-64">
         <div className="max-w-6xl mx-auto p-6 mt-8">
           <h2 className="text-2xl font-bold text-emerald-700 mb-6 text-center">
