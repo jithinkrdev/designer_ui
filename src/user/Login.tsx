@@ -27,7 +27,11 @@ export default function Login({ onLogin }: LoginProps) {
       const res = await api.post("/auth/login", { email, password });
       const token = res.data?.token;
       const userName = res.data?.username;
-      const subscription = res.data?.subscription;
+      const subscription = res.data?.subscription || {
+        availableQuata: 0,
+        expiryDate: null,
+        subscriptionType: "Free",
+      };
       if (token) {
         localStorage.setItem("token", token);
         localStorage.setItem("userName", userName);

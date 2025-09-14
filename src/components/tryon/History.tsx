@@ -58,28 +58,34 @@ const History = () => {
         </div>
 
         <div className="grid grid-cols-4 gap-4">
-          {catalogs.map((catalog, index) => (
-            <div
-              key={`second-${index}`}
-              className="aspect-[3/4] bg-gray-700 rounded-lg overflow-hidden relative group cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
-            >
-              <button
-                className="absolute top-2 right-2 z-10 p-1 bg-gray-900/70 rounded-full hover:bg-gray-800 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(catalog.imageUrl, "_blank");
-                }}
-                title="Download image"
-              >
-                <Download size={18} />
-              </button>
-              <ImageWithFallback
-                src={catalog.imageUrl}
-                alt={`AI Outfit Result ${index + 5}`}
-                className="w-full h-full object-cover"
-              />
+          {catalogs.length === 0 ? (
+            <div className="col-span-4 flex items-center justify-center h-[200px] text-gray-400 text-lg">
+              No previous results found.
             </div>
-          ))}
+          ) : (
+            catalogs.map((catalog, index) => (
+              <div
+                key={`second-${index}`}
+                className="aspect-[3/4] bg-gray-700 rounded-lg overflow-hidden relative group cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+              >
+                <button
+                  className="absolute top-2 right-2 z-10 p-1 bg-gray-900/70 rounded-full hover:bg-gray-800 text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(catalog.imageUrl, "_blank");
+                  }}
+                  title="Download image"
+                >
+                  <Download size={18} />
+                </button>
+                <ImageWithFallback
+                  src={catalog.imageUrl}
+                  alt={`AI Outfit Result ${index + 5}`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

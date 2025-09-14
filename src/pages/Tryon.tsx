@@ -140,7 +140,7 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
   );
 
   const sectionB = (
-    <div className="flex-1 bg-gray-900 h-full min-h-0 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 max-h-screen">
+    <div className="flex-1 bg-gray-900 h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900 max-h-screen min-h-screen">
       {/* Header */}
       <div className="p-4 border-b border-gray-700">
         <div className="flex items-center justify-between">

@@ -62,30 +62,36 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
       {activeTab === "Default" && (
         <div className="p-4 bg-gray-800 rounded-lg text-white">
           <div className="grid grid-cols-4 gap-4">
-            {models.map((image, index) => (
-              <div
-                key={`first-${index}`}
-                className={`aspect-[3/4] bg-gray-700 rounded-lg overflow-hidden relative group cursor-pointer transition-all
-                  ${
-                    selectedModel && image._id === selectedModel._id
-                      ? "ring-2 ring-blue-500 border-2 border-blue-500"
-                      : "hover:ring-2 hover:ring-blue-500"
-                  }`}
-                onClick={() => handleSelectModel(image)}
-              >
-                {isGenerating ? (
-                  <div className="w-full h-full bg-gray-700 animate-pulse flex items-center justify-center">
-                    <div className="text-gray-500">Generating...</div>
-                  </div>
-                ) : (
-                  <ImageWithFallback
-                    src={image.imageUrl}
-                    alt={`AI Outfit Result ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+            {models.length === 0 ? (
+              <div className="col-span-4 flex items-center justify-center h-[200px] text-gray-400 text-lg">
+                There is no default modals available on the system.
               </div>
-            ))}
+            ) : (
+              models.map((image, index) => (
+                <div
+                  key={`first-${index}`}
+                  className={`aspect-[3/4] bg-gray-700 rounded-lg overflow-hidden relative group cursor-pointer transition-all
+                    ${
+                      selectedModel && image._id === selectedModel._id
+                        ? "ring-2 ring-blue-500 border-2 border-blue-500"
+                        : "hover:ring-2 hover:ring-blue-500"
+                    }`}
+                  onClick={() => handleSelectModel(image)}
+                >
+                  {isGenerating ? (
+                    <div className="w-full h-full bg-gray-700 animate-pulse flex items-center justify-center">
+                      <div className="text-gray-500">Generating...</div>
+                    </div>
+                  ) : (
+                    <ImageWithFallback
+                      src={image.imageUrl}
+                      alt={`AI Outfit Result ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </div>
       )}
