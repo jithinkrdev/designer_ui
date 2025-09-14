@@ -1,15 +1,26 @@
 import React, { useState } from "react";
+import { Copy } from "lucide-react";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Skeleton } from "./ui/skeleton";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import api from "../api/config"; // Adjust the import based on your project structure
 import Snackbar from "./common/Snackbar";
 import SeoDialog from "./modals/SeoDialog";
 import BusyIndicator from "./common/BusyIndicator";
+import TwoSectionSwitcher from "./common/TwoSectionSwitcher";
+import { useIsMobile } from "./ui/use-mobile";
 
 const SeoGenerator: React.FC = () => {
-  const [brief, setBrief] = useState("");
-  const [contact, setContact] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [platform, setPlatform] = useState<string>("");
-  const [dressType, setDressType] = useState<string>("");
+  const [formData, setFormData] = useState({
+    brand: "",
+    brief: "",
+    contact: "",
+    whatsapp: "",
+    platform: "",
+    dressType: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [snackbar, setSnackbar] = useState<{
     message: string;
@@ -17,8 +28,9 @@ const SeoGenerator: React.FC = () => {
   } | null>(null);
   const [seoDialogOpen, setSeoDialogOpen] = useState(false);
   const [seoResponse, setSeoResponse] = useState("");
-  const [brandName, setBrandName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const isMobile = useIsMobile();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,12 +38,12 @@ const SeoGenerator: React.FC = () => {
     setLoading(true);
     // Prepare payload
     const payload = {
-      brandName,
-      brief,
-      contactNo: contact,
-      whatsappLink: whatsapp,
-      platform,
-      dresstype: dressType,
+      brandName: formData.brand,
+      brief: formData.brief,
+      contactNo: formData.contact,
+      whatsappLink: formData.whatsapp,
+      platform: formData.platform,
+      dresstype: formData.dressType,
     };
     try {
       const token = localStorage.getItem("token");
@@ -40,7 +52,6 @@ const SeoGenerator: React.FC = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log({ res });
       setSeoResponse(res.data || "");
       setSeoDialogOpen(true);
       setSnackbar({ message: "SEO generated successfully!", type: "success" });
@@ -51,162 +62,161 @@ const SeoGenerator: React.FC = () => {
     }
   };
 
-  return (
-    <div className="max-w-xl mx-auto p-6 mt-24 bg-white shadow-lg rounded-xl">
-      <h2 className="text-2xl font-bold mb-6 text-emerald-600 text-center">
-        SEO Generator
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Brand Name (*)
-          </label>
-          <input
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const sectionA = (
+    <div className="w-full max-w-md bg-transparent px-2 sm:px-0">
+      <h2 className="text-xl font-semibold mb-6 text-white">SEO Generator</h2>
+      <form onSubmit={handleSubmit} className="space-y-5 h-full">
+        <div className="mb-2">
+          <Label className="mb-2">Brand Name (*)</Label>
+          <Input
             type="text"
-            value={brandName}
-            onChange={(e) => setBrandName(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2 mb-4"
-            placeholder="Enter brand name"
-            required
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            className="mt-1"
           />
         </div>
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Brief about post/Reel (*)
-          </label>
-          <textarea
-            value={brief}
-            onChange={(e) => setBrief(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2"
+
+        <div className="mb-2 mt-8">
+          <Label className="mb-2">Brief about post/Reel (*)</Label>
+          <Textarea
+            name="brief"
+            value={formData.brief}
+            onChange={handleChange}
             rows={3}
-            placeholder="Describe your post..."
-            required
+            className="mt-1"
           />
         </div>
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Contact No (*)
-          </label>
-          <input
+
+        <div className="mb-2 mt-8">
+          <Label className="mb-2">Contact No (*)</Label>
+          <Input
             type="text"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2"
-            placeholder="Enter contact number"
-            required
+            name="contact"
+            value={formData.contact}
+            onChange={handleChange}
+            className="mt-1"
           />
         </div>
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            WhatsApp Link (optional)
-          </label>
-          <input
+
+        <div className="mb-2 mt-8">
+          <Label className="mb-2">WhatsApp Link (optional)</Label>
+          <Input
             type="text"
-            value={whatsapp}
-            onChange={(e) => setWhatsapp(e.target.value)}
-            className="w-full border border-gray-300 rounded-md p-2"
-            placeholder="Enter WhatsApp link"
+            name="whatsapp"
+            value={formData.whatsapp}
+            onChange={handleChange}
+            className="mt-1"
           />
         </div>
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Platform(*)
-          </label>
-          <div className="flex gap-6 items-center">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="platform"
-                value="youtube"
-                checked={platform === "youtube"}
-                onChange={(e) => setPlatform(e.target.value)}
-              />
-              YouTube
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="platform"
-                value="instagram"
-                checked={platform === "instagram"}
-                onChange={(e) => setPlatform(e.target.value)}
-              />
-              Instagram
-            </label>
-          </div>
+
+        <div className="mb-2 mt-8">
+          <Label className="mb-2">Platform (*)</Label>
+          <RadioGroup
+            name="platform"
+            value={formData.platform}
+            onValueChange={(value) =>
+              setFormData((prev) => ({ ...prev, platform: value }))
+            }
+            className="flex gap-6 mt-1"
+          >
+            <Label className="flex items-center gap-2 cursor-pointer">
+              <RadioGroupItem value="YouTube" id="platform-youtube" />
+              <span>YouTube</span>
+            </Label>
+            <Label className="flex items-center gap-2 cursor-pointer">
+              <RadioGroupItem value="Instagram" id="platform-instagram" />
+              <span>Instagram</span>
+            </Label>
+          </RadioGroup>
         </div>
-        <div>
-          <label className="block text-gray-700 font-medium mb-2">
-            Dress Type (*)
-          </label>
-          <div className="flex gap-6 items-center">
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="dressType"
-                value="Nighty"
-                checked={dressType === "Nighty"}
-                onChange={(e) => setDressType(e.target.value)}
-              />
-              Nighty
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="dressType"
-                value="TShirt"
-                checked={dressType === "TShirt"}
-                onChange={(e) => setDressType(e.target.value)}
-              />
-              TShirt
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="dressType"
-                value="Kurty"
-                checked={dressType === "Kurty"}
-                onChange={(e) => setDressType(e.target.value)}
-              />
-              Kurty
-            </label>
-            <label className="flex items-center gap-2">
-              <input
-                type="radio"
-                name="dressType"
-                value="Churidar"
-                checked={dressType === "Churidar"}
-                onChange={(e) => setDressType(e.target.value)}
-              />
-              Churidar
-            </label>
-          </div>
+
+        <div className="mb-4 mt-8">
+          <Label className="mb-2">Dress Type (*)</Label>
+          <RadioGroup
+            name="dressType"
+            value={formData.dressType}
+            onValueChange={(value) =>
+              setFormData((prev) => ({ ...prev, dressType: value }))
+            }
+            className="flex gap-4 flex-wrap mt-1"
+          >
+            {["Nighty", "TShirt", "Kurty", "Churidar"].map((type) => (
+              <Label
+                key={type}
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <RadioGroupItem value={type} id={`dressType-${type}`} />
+                <span>{type}</span>
+              </Label>
+            ))}
+          </RadioGroup>
         </div>
+
         <button
           type="submit"
-          className="w-full bg-emerald-700 text-white px-4 py-2 rounded-md hover:bg-emerald-800 font-semibold transition-colors"
+          className="w-full py-2 bg-green-600 hover:bg-green-700 rounded font-semibold mt-2"
         >
           Generate SEO Content
         </button>
       </form>
-      {submitted && (
-        <div className="mt-6 text-center text-green-700 font-semibold">
-          Form submitted! (You can handle API logic here)
-        </div>
-      )}
-      {snackbar && (
-        <Snackbar
-          message={snackbar.message}
-          type={snackbar.type}
-          onClose={() => setSnackbar(null)}
-        />
-      )}
-      <SeoDialog
-        response={seoResponse}
-        open={seoDialogOpen}
-        onClose={() => setSeoDialogOpen(false)}
+    </div>
+  );
+
+  const sectionB = (
+    <div className="w-full  px-2 sm:pl-8 min-h-screen flex flex-col">
+      <h2 className="text-lg font-semibold mb-6">Generated Results</h2>
+      <div className="bg-slate-800 mb-8 rounded-lg p-8 flex-1 flex items-center justify-center text-gray-400 relative">
+        {loading ? (
+          <div className="w-full flex flex-col gap-2">
+            <Skeleton className="w-full h-4" />
+            <Skeleton className="w-3/4 h-4" />
+            <Skeleton className="w-1/2 h-4" />
+          </div>
+        ) : seoResponse ? (
+          <div className="w-full relative">
+            <button
+              className="absolute top-2 right-2 p-2 rounded hover:bg-gray-700 text-gray-300 z-10"
+              onClick={() => {
+                navigator.clipboard.writeText(seoResponse);
+                setSnackbar({
+                  message: "Copied to clipboard!",
+                  type: "success",
+                });
+              }}
+              title="Copy to clipboard"
+            >
+              <Copy size={20} />
+            </button>
+            <span className="text-white whitespace-pre-line block">
+              {seoResponse}
+            </span>
+          </div>
+        ) : (
+          "Your SEO content will appear here..."
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex-1 flex lg:px-8 py-8 lg:gap-8 h-full">
+      <TwoSectionSwitcher
+        sectionA={sectionA}
+        sectionB={sectionB}
+        initialSection="A"
+        sectionALabel="Form"
+        sectionBLabel="Result"
+        showSwitch={isMobile || submitted}
       />
-      <BusyIndicator show={loading} />
+      )
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import AuthRouter from "./AuthRouter";
+import "./style/global.css";
 
 function App() {
   return <AuthRouter />;

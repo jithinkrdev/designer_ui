@@ -1,20 +1,16 @@
 import React, { useState } from "react";
-import { theme } from "./theme";
-import Header from "../layout/Header";
-import Sidebar from "../layout/Sidebar";
+import Layout from "../layout";
 
 const Settings: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   return (
-    <div className={theme.gradientBg + " min-h-screen w-full"}>
-      <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <Layout>
       <div
-        className={`flex flex-col items-center justify-center min-h-screen w-full pt-24 pb-8 px-2 ${
+        className={`flex items-center justify-center min-h-screen w-full pt-24 pb-8 px-2 ${
           sidebarOpen ? "md:ml-64 md:pl-8 md:pr-8" : ""
         } transition-all duration-300`}
       >
-        <div className="bg-white rounded-2xl shadow-2xl p-12 flex flex-col items-center animate-fade-in">
+        <div className="bg-white rounded-2xl shadow-2xl p-12 flex flex-col items-center animate-fade-in w-full max-w-xl">
           <svg
             className="mb-6 animate-bounce"
             width="64"
@@ -64,7 +60,7 @@ const Settings: React.FC = () => {
           }
         `}</style>
       </div>
-    </div>
+    </Layout>
   );
 };
 

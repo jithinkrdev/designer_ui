@@ -41,7 +41,7 @@ const features = [
 
 export default function Tile() {
   return (
-    <div className="p-6 mt-16">
+    <div className="p-6 mt-16 pt-24">
       <h2 className="text-2xl font-bold text-green-800 mb-6"></h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 justify-items-center">
         {/* Center tiles horizontally */}

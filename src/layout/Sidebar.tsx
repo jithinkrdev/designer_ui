@@ -1,46 +1,99 @@
-const links = [
-  { name: "Home", href: "/dashboard" },
-  { name: "TryOn", href: "/tryon" },
-  { name: "Create Designs", href: "/design/new" },
-  { name: "Create Seo", href: "/seo" },
-  { name: "Catalog", href: "/catalogs" },
-  { name: "Design List", href: "/designlist" },
-  { name: "Subscription", href: "/subscription" },
-  { name: "Settings", href: "/settings" },
-];
+import {
+  Menu,
+  Settings,
+  Shirt,
+  Image,
+  TextSelect,
+  User,
+  LogOut,
+} from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "../components/ui/popover";
+import { useNavigate } from "react-router-dom";
 
-interface SidebarProps {
-  sidebarOpen: boolean;
-  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
+  const currentPath =
+    typeof window !== "undefined" ? window.location.pathname : "";
+  const sidebarIcons = [
+    { icon: Menu, href: "/" },
+    { icon: Shirt, href: "/tryon" },
+    { icon: Image, href: "/catalogs" },
+    { icon: TextSelect, href: "/seo" },
+    { icon: Settings, href: "/settings" },
+  ].map((item) => ({
+    ...item,
+    active: currentPath === item.href,
+  }));
 
-const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen }) => {
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
+
+  const handleNavigation = (href: string) => {
+    navigate(href);
+  };
+
+  // console.log({
+  //   sidebarIcons
+  // });
+
+  function getUsername() {
+    if (typeof window === "undefined") return "";
+    const userName = localStorage.getItem("userName");
+    if (!userName) return "";
+    try {
+      return userName ?? "";
+    } catch {
+      return "";
+    }
+  }
+
   return (
     <>
       {/* Drawer Sidebar */}
-      <div
-        id="designer-sidebar"
-        className={`fixed top-0 left-0 h-full w-64 bg-white  z-40 transform transition-transform duration-300 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* <div className="p-6 mt-24">
-          <h2 className="text-2xl font-bold text-emerald-600">Designer App</h2>
-        </div> */}
-        <nav className="mt-24">
-          <ul>
-            {links.map((link) => (
-              <li key={link.name} className="mb-2">
-                <a
-                  href={link.href}
-                  className="block px-6 py-3 cursor-pointer rounded-lg text-gray-700 font-medium hover:bg-emerald-50 hover:text-emerald-600 transition"
+      <div className="w-12 bg-gray-800 flex flex-col items-center py-4 space-y-4 h-full justify-between">
+        <div>
+          {sidebarIcons.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => handleNavigation(item.href)}
+              className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                item.active
+                  ? "bg-gray-700 text-white"
+                  : "text-gray-400 hover:text-white hover:bg-gray-700"
+              }`}
+            >
+              <item.icon size={20} />
+            </button>
+          ))}
+        </div>
+        <div className="mb-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="p-2 cursor-pointer rounded-full bg-gray-700 text-white hover:bg-gray-600 transition-colors flex items-center justify-center">
+                <User size={24} />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="end" sideOffset={8} className="p-0 w-48">
+              <div className="flex flex-col">
+                <div className="px-4 py-3 border-b border-gray-700 text-white font-semibold">
+                  {getUsername()}
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="flex cursor-pointer items-center gap-2 px-4 py-3 text-red-400 hover:bg-gray-800 w-full text-left"
                 >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+                  <LogOut size={18} /> Logout
+                </button>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
       {/* No overlay when sidebar is open */}
     </>
