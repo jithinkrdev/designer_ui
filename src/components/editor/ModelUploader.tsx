@@ -2,7 +2,7 @@ import React, { type ChangeEvent, useRef } from "react";
 import { ImageIcon } from "lucide-react";
 
 interface Props {
-  modelImg: File;
+  modelImg: string;
   onUpload: (file: File) => void;
   onOpenDialog: () => void;
 }
