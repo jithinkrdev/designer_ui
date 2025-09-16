@@ -5,7 +5,6 @@ import Register from "./user/Register";
 import DesignPage from "./pages/DesignPage";
 import SeoGeneratorPage from "./pages/SeoGeneratorPage";
 import NotFound from "./pages/NotFound";
-import Trending from "./pages/Trending";
 import Settings from "./pages/Settings";
 import ChangePassword from "./pages/ChangePassword";
 import Subscription from "./pages/Subscription";
@@ -13,6 +12,7 @@ import CatalogsPage from "./pages/CatalogsPage";
 import DesignListPage from "./pages/DesignListPage";
 import TryOn from "./pages/Tryon";
 import HomePage from "./pages/HomePage";
+import VideoPage from "./pages/VideoPage";
 
 // PrivateRoute component
 const PrivateRoute = ({ element }: { element: React.ReactElement }) => {
@@ -53,12 +53,6 @@ const AuthRouter: React.FC = (props) => (
         element={<PrivateRoute element={<DesignListPage />} />}
       />
 
-      {/* Trending */}
-      <Route
-        path="/trending"
-        element={<PrivateRoute element={<Trending />} />}
-      />
-
       {/* Sales */}
       <Route
         path="/subscription"
@@ -84,6 +78,8 @@ const AuthRouter: React.FC = (props) => (
         path="/catalogs"
         element={<PrivateRoute element={<CatalogsPage />} />}
       />
+
+      <Route path="/video" element={<PrivateRoute element={<VideoPage />} />} />
       {/* Catch-all route for 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>

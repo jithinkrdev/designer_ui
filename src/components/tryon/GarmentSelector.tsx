@@ -4,11 +4,13 @@ import { Plus } from "lucide-react";
 type GarmentSelectorProps = {
   uploadedImages: File[];
   setUploadedImages: React.Dispatch<React.SetStateAction<File[]>>;
+  allowMultiple?: boolean;
 };
 
 const GarmentSelector: React.FC<GarmentSelectorProps> = ({
   uploadedImages,
   setUploadedImages,
+  allowMultiple = true,
 }) => {
   // Upload preview and thumbnails
   const [previewImage, setPreviewImage] = useState<File | null>(null);
@@ -18,7 +20,11 @@ const GarmentSelector: React.FC<GarmentSelectorProps> = ({
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setUploadedImages((prev) => [...prev, file]);
+      if (allowMultiple) {
+        setUploadedImages((prev) => [...prev, file]);
+      } else {
+        setUploadedImages([file]);
+      }
       setPreviewImage(file);
     }
   };

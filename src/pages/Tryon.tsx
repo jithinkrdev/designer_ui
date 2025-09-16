@@ -196,7 +196,7 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
   );
 
   return (
-    <div className="h-screen bg-background flex overflow-hidden relative">
+    <div className="h-screen bg-background flex overflow-hidden bg-gray-800 relative">
       {/* Left Sidebar */}
       <Sidebar />
       <TwoSectionSwitcher

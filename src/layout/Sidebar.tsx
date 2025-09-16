@@ -6,6 +6,7 @@ import {
   TextSelect,
   User,
   LogOut,
+  Video,
 } from "lucide-react";
 import {
   Popover,
@@ -21,6 +22,7 @@ const Sidebar: React.FC = () => {
   const sidebarIcons = [
     { icon: Menu, href: "/" },
     { icon: Shirt, href: "/tryon" },
+    { icon: Video, href: "/video" },
     { icon: Image, href: "/catalogs" },
     { icon: TextSelect, href: "/seo" },
     { icon: Settings, href: "/settings" },
