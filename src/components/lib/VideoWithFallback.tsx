@@ -14,6 +14,40 @@ export function VideoWithFallback(
 
   const { src, style, className, ...rest } = props;
 
+  // Only pass img-compatible props to <img>
+  const imgProps: Partial<React.ImgHTMLAttributes<HTMLImageElement>> = {};
+  for (const key in rest) {
+    if (
+      [
+        "alt",
+        "crossOrigin",
+        "decoding",
+        "height",
+        "loading",
+        "referrerPolicy",
+        "sizes",
+        "srcSet",
+        "useMap",
+        "width",
+        "onError",
+        "onLoad",
+        "className",
+        "style",
+        "id",
+        "title",
+        "tabIndex",
+        "draggable",
+        "role",
+        "aria-label",
+        "aria-labelledby",
+        "aria-describedby",
+      ].includes(key)
+    ) {
+      // @ts-expect-error
+      imgProps[key] = rest[key];
+    }
+  }
+
   return didError ? (
     <div
       className={`inline-block bg-gray-100 text-center align-middle ${
@@ -25,7 +59,7 @@ export function VideoWithFallback(
         <img
           src={ERROR_VIDEO_SRC}
           alt="Error loading video"
-          {...rest}
+          {...(imgProps as React.ImgHTMLAttributes<HTMLImageElement>)}
           data-original-url={src}
         />
       </div>
