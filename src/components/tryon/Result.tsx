@@ -2,6 +2,7 @@ import { ImageWithFallback } from "../lib/ImageWithFallback";
 import { Button } from "../ui/button";
 import { Edit3, Undo } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
+import { downloadImage } from "../../utilities/utils";
 
 const Result = ({
   isGenerating,
@@ -51,10 +52,9 @@ const Result = ({
             >
               <button
                 className="absolute top-2 right-2 z-10 p-1 bg-gray-900/70 rounded-full hover:bg-gray-800 text-white"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.open(image, "_blank");
-                }}
+                onClick={() =>
+                  downloadImage(image, `AI_Outfit_Result_${index + 1}.jpg`)
+                }
                 title="Download image"
               >
                 <svg

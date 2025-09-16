@@ -4,7 +4,7 @@ import { ImageWithFallback } from "../lib/ImageWithFallback";
 import { Button } from "../ui/button";
 import { Edit3, Undo, Download } from "lucide-react";
 import api from "../../api/config";
-// import { downloadImage } from "../../utilities/utils";
+import { downloadImage } from "../../utilities/utils";
 
 type Catalog = {
   imageUrl: string;
@@ -69,11 +69,13 @@ const History = () => {
                 className="aspect-[3/4] bg-gray-700 rounded-lg overflow-hidden relative group cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
               >
                 <button
-                  className="absolute top-2 right-2 z-10 p-1 bg-gray-900/70 rounded-full hover:bg-gray-800 text-white"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    window.open(catalog.imageUrl, "_blank");
-                  }}
+                  className="absolute cursor-pointer top-2 right-2 z-10 p-1 bg-gray-900/70 rounded-full hover:bg-gray-800 text-white"
+                  onClick={() =>
+                    downloadImage(
+                      catalog.imageUrl,
+                      `AI_Outfit_Result_${index + 1}.jpg`
+                    )
+                  }
                   title="Download image"
                 >
                   <Download size={18} />

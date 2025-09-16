@@ -1,7 +1,7 @@
 // src/utils/withLoader.ts
 import type { Dispatch, SetStateAction } from "react";
 
-interface LoaderState {
+export interface LoaderState {
   isLoading: boolean;
   title: string;
   subtitle: string;
@@ -23,7 +23,7 @@ export function withLoader<T extends any[], R>(
     let progress = options?.progress ?? 0;
     // Simulate progress increment
     const interval = setInterval(() => {
-      progress = Math.min(progress + 15, 90);
+      progress = Math.min(progress + 0.1, 99);
       setLoader((prev) => ({ ...prev, progress }));
     }, 300);
     try {
