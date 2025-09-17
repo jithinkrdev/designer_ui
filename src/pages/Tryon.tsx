@@ -75,7 +75,7 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
 
   const sectionA = (
     <div className="lg:w-1/3 bg-gray-900 h-full min-h-screen flex">
-      <div className="flex-1 p-4 overflow-y-auto">
+      <div className="flex-1 p-4 overflow-y-auto max-h-screen">
         <div className="space-y-6 pb-24">
           {/* Header */}
           <div>
@@ -116,11 +116,11 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
                 setUploadedImages={setUploadedImages}
               />
 
-              <div className="flex items-center gap-4 w-full">
+              <div className="flex mt-8 items-center gap-4 w-full">
                 <Button
                   onClick={handleGenerate}
                   disabled={isGenerating}
-                  className="flex-1 cursor-pointer bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-bold"
+                  className="flex-1  cursor-pointer bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-bold"
                 >
                   {isGenerating ? (
                     <div className="flex items-center gap-2">
