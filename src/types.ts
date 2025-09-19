@@ -8,7 +8,6 @@ export interface Model {
   __v: number;
 }
 
-
 export interface TryOnResponse {
   imageUrl: string;
   data: {
@@ -17,4 +16,5 @@ export interface TryOnResponse {
   };
   status?: string;
   message?: string;
+  quotaUsed?: number;
 }

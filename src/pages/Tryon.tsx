@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useTryOnApi } from "../api/useTryOnApi";
+import { toast } from "sonner";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
 import {
@@ -16,8 +18,8 @@ import TwoSectionSwitcher from "../components/common/TwoSectionSwitcher";
 import { useIsMobile } from "../components/ui/use-mobile";
 import Result from "../components/tryon/Result";
 import { getAvailableQuata } from "../components/ui/utils";
-import type { Model, TryOnResponse } from "../types";
-import api from "../api/config";
+import type { Model } from "../types";
+import { LoadingState } from "../components/ui/loading";
 
 interface TryOnPageProps {
   onBackToSetup?: () => void;
@@ -26,50 +28,49 @@ interface TryOnPageProps {
 export default function TryOn({ onBackToSetup }: TryOnPageProps) {
   const [selectedModel, setSelectedModel] = useState<Model | null>(null);
   const [modelImg, setModelImg] = useState<File | string | null>(null);
-  const [generatedImages, setGeneratedImages] = useState<string[]>([]);
-  const [isGenerating, setIsGenerating] = useState(false);
   const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-
   const [activeTab, setActiveTab] = useState("All");
-
   const isMobile = useIsMobile();
+
+  const { generateTryOn, Loader, generatedImages } = useTryOnApi();
 
   const tabs = ["All", "Images", "Videos", "Audio"];
 
-  const handleGenerate = async (): Promise<void> => {
-    setIsGenerating(true);
+  const handleGenerate = async () => {
+    // Validation
+    if (!modelImg && !selectedModel) {
+      toast.error("Please select a model image or a virtual model.");
+      return;
+    }
+    if (!uploadedImages || uploadedImages.length === 0) {
+      toast.error("Please upload at least one garment image.");
+      return;
+    }
     try {
-      const formData = new FormData();
-
-      // Person (model image)
-      if (modelImg instanceof File) {
-        formData.append("person", modelImg);
-      } else if (typeof selectedModel === "object" && selectedModel !== null) {
-        formData.append("personUrl", selectedModel?.imageUrl);
+      const result = await generateTryOn(
+        modelImg,
+        selectedModel,
+        uploadedImages
+      );
+      // Update availableQuata in localStorage subscription
+      if (result && typeof result.quotaUsed === "number") {
+        const subRaw = localStorage.getItem("subscription");
+        if (subRaw) {
+          try {
+            const sub = JSON.parse(subRaw);
+            sub.availableQuata = sub.availableQuata - result.quotaUsed;
+            localStorage.setItem("subscription", JSON.stringify(sub));
+          } catch (e) {
+            // Optionally handle JSON parse error
+          }
+        }
       }
-
-      // Dress inputs (garment images + prompts)
-      uploadedImages.map((input) => {
-        formData.append("garments", input); // multer field
-        return { prompt: "" };
-      });
-
-      // API call
-      const token = localStorage.getItem("token");
-      const res = await api.post<TryOnResponse>("/tryon", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // Show result image
-      setGeneratedImages([res.data.imageUrl]);
-      // setShowResult(true);
     } catch (err) {
-      console.error("Error generating try-on:", err);
-    } finally {
-      setIsGenerating(false);
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Failed to generate try-on. Please try again."
+      );
     }
   };
 
@@ -119,10 +120,10 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
               <div className="flex mt-8 items-center gap-4 w-full">
                 <Button
                   onClick={handleGenerate}
-                  disabled={isGenerating}
-                  className="flex-1  cursor-pointer bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-bold"
+                  disabled={Loader.isLoading}
+                  className="flex-1 cursor-pointer bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg text-lg font-bold"
                 >
-                  {isGenerating ? (
+                  {Loader.isLoading ? (
                     <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       Generate
@@ -187,7 +188,10 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
       {/* Try-On Results */}
       <div className="p-6 space-y-8">
         {/* First AI Outfit Section */}
-        <Result isGenerating={isGenerating} tryOnResults={generatedImages} />
+        <Result
+          isGenerating={Loader.isLoading}
+          tryOnResults={generatedImages}
+        />
 
         {/* Second AI Outfit Section */}
         <History />
@@ -207,6 +211,13 @@ export default function TryOn({ onBackToSetup }: TryOnPageProps) {
         sectionBLabel="Result"
         showSwitch={isMobile}
       />
+      {Loader.isLoading && (
+        <LoadingState
+          title={Loader.title}
+          subtitle={Loader.subtitle}
+          progress={Loader.progress}
+        />
+      )}
     </div>
   );
 }

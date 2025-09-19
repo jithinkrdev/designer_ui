@@ -1,33 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "sonner";
 import { ImageWithFallback } from "../lib/ImageWithFallback";
 import { Button } from "../ui/button";
 import { Edit3, Undo, Download } from "lucide-react";
-import api from "../../api/config";
 import { downloadImage } from "../../utilities/utils";
-
-type Catalog = {
-  imageUrl: string;
-  // Add other properties if needed
-};
+import { useTryOnApi } from "../../api/useTryOnApi";
 
 const History = () => {
-  const [catalogs, setCatalogs] = useState<Catalog[]>([]);
+  const { getAllCatalogs, catalogs } = useTryOnApi();
   useEffect(() => {
-    const accessToken = localStorage.getItem("token");
-    api
-      .get("/catelog", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((res) => {
-        setCatalogs(res.data);
-      })
-      .catch(() => {
-        toast.error("Failed to fetch catalogs");
-      });
-  }, []);
+    getAllCatalogs().catch(() => {
+      toast.error("Failed to fetch catalogs");
+    });
+  }, [getAllCatalogs]);
 
   return (
     <div className="space-y-8">

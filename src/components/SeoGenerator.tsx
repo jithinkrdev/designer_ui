@@ -1,13 +1,14 @@
 import React, { useState } from "react";
+import { useSeoGeneratorApi } from "../api/useSeoGeneratorApi";
 import { Copy } from "lucide-react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Skeleton } from "./ui/skeleton";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import api from "../api/config"; // Adjust the import based on your project structure
 import { toast } from "sonner";
 import TwoSectionSwitcher from "./common/TwoSectionSwitcher";
+import { LoadingState } from "./ui/loading";
 import { useIsMobile } from "./ui/use-mobile";
 
 const SeoGenerator: React.FC = () => {
@@ -21,16 +22,13 @@ const SeoGenerator: React.FC = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   // Remove snackbar state, use sonner toast instead
-  const [seoResponse, setSeoResponse] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { generateSeo, seoResponse, Loader } = useSeoGeneratorApi();
 
   const isMobile = useIsMobile();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
-    setLoading(true);
-    // Prepare payload
     const payload = {
       brandName: formData.brand,
       brief: formData.brief,
@@ -40,19 +38,13 @@ const SeoGenerator: React.FC = () => {
       dresstype: formData.dressType,
     };
     try {
-      const token = localStorage.getItem("token");
-      const res = await api.post("/seo-generator", payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setSeoResponse(res.data || "");
+      await generateSeo(payload);
       toast.success("SEO generated successfully!");
-    } catch (err) {
-      toast.error("Failed to generate SEO.");
+    } catch (err: any) {
+      const apiMessage =
+        err?.response?.data?.error || err.message || "Failed to generate SEO.";
+      toast.error(apiMessage);
       console.error("SEO generation error:", err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -168,7 +160,7 @@ const SeoGenerator: React.FC = () => {
     <div className="w-full  px-2 sm:pl-8 min-h-screen flex flex-col">
       <h2 className="text-lg font-semibold mb-6">Generated Results</h2>
       <div className="bg-slate-800 mb-8 rounded-lg p-8 flex-1 flex items-center justify-center text-gray-400 relative">
-        {loading ? (
+        {Loader.isLoading ? (
           <div className="w-full flex flex-col gap-2">
             <Skeleton className="w-full h-4" />
             <Skeleton className="w-3/4 h-4" />
@@ -198,7 +190,7 @@ const SeoGenerator: React.FC = () => {
   );
 
   return (
-    <div className="flex-1 flex lg:px-8 py-8 lg:gap-8 h-full">
+    <div className="flex-1 flex lg:px-8 py-8 lg:gap-8 h-full relative">
       <TwoSectionSwitcher
         sectionA={sectionA}
         sectionB={sectionB}
@@ -207,6 +199,15 @@ const SeoGenerator: React.FC = () => {
         sectionBLabel="Result"
         showSwitch={isMobile || submitted}
       />
+      {Loader.isLoading && (
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60">
+          <LoadingState
+            title={Loader.title}
+            subtitle={Loader.subtitle}
+            progress={Loader.progress}
+          />
+        </div>
+      )}
     </div>
   );
 };

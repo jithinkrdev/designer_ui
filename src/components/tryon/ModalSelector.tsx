@@ -39,6 +39,7 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
   }, []);
   const handleSelectModel = (model: Model) => {
     setSelectedModel(model);
+    setModelImg(null);
   };
 
   const isGenerating = false; // Replace with actual state if needed
@@ -99,8 +100,7 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
         <div
           className="p-4 bg-gray-800 rounded-lg text-white cursor-pointer"
           onClick={() => {
-            if (!selectedModel?.imageUrl)
-              document.getElementById("modal-upload-input")?.click();
+            document.getElementById("modal-upload-input")?.click();
           }}
         >
           <input
@@ -111,6 +111,7 @@ const ModalSelector: React.FC<ModalSelectorProps> = ({
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) {
+                setSelectedModel(null);
                 setModelImg(file);
               }
             }}
